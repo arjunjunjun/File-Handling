@@ -606,7 +606,7 @@ def delete_binary():
 
             print('\n')
 
-            b=input("are you sure you wish to delete the above record? (Y/N)")
+            b=input("are you sure you wish to delete the above record(s)? (Y/N)")
             if b in ['y','Y']:
                 var=1
             else:
@@ -946,7 +946,7 @@ def delete_csv():
             return
                 
         print('\n')
-        inp=input("are you sure you wish to delete the above record? (Y/N)")
+        inp=input("are you sure you wish to delete the above record(s)? (Y/N)")
         if inp in ['y','Y']:
             b=1
         else:
@@ -999,7 +999,7 @@ def delete_csv():
                     return
 
                 try:
-                    if p<len(lst) and flag==0:
+                    if len(new1)>1 and flag==0:
                         with open("student.csv",'w',newline='') as file10:
                             y=csv.writer(file10)
                             y.writerows(final)
