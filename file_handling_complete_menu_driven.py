@@ -196,12 +196,7 @@ def delete_text2():
         new=[]
         new1=[]
         new2=[]
-        double=[]
-        u=0
-        t=0
-        check=0
-        lastcheck=0
-        
+        double=[]    
                 
         for rec in lst:
             l=rec.strip().split(' ')
@@ -220,37 +215,49 @@ def delete_text2():
 
         
         print('\n')
-        ch=input("are you sure you wish to delete the above record(s)? (Y/N) ")
-        if ch in ['y','Y']:
-            u=1
+        if len(new1)>1:
+            ch=input("are you sure you wish to delete any of the above records? (Y/N) ")
+        else:
+            ch=input("are you sure you wish to delete the above record? (Y/N) ")
 
-        if ch in ['n','N']:
-            t=1
+        if ch in ['y','Y']:
+            pass
+        else:
+            print('\n')
+            print("no records deleted!")
+            return
+
                 
 
 
         if len(new1)>1:
-            variable=0
-            if u==1:
-                print('\n')
-                z=input("Two or more students have the same name! \nEnter class of the student whoose records you wish to delete: ")
+            print('\n')
+            z=input("Two or more students have the same name! \nEnter class of the student whoose records you wish to delete: ")
 
+            classes=[]
+            chosenclass=[]
             try:
                 for rec in lst:
                     l=rec.strip().split(' ')
-                    if z in l[1]:
-                        check=1
+                    if l[0]==a:
+                        chosenclass.append(l[1])
+                    classes.append(l[1])
 
             except:
                 print('')
+                
+            if z in classes and z not in chosenclass:
+                print('\n')
+                print("No matches of given class and name found!")
+                return
 
-            if check==0 and u==1:
+        
+            if z not in classes:
                 print('\n')
                 print("class does not exist!")
-        else:
-            variable=1
+                return
             
-        if check==1 or variable==1:
+        if len(new1)>1:
             try:      
                 for i in lst:
                     l=i.strip().split(' ')
@@ -269,37 +276,21 @@ def delete_text2():
             for i in new2:
                 if i not in double:
                     double.append(i)
-            if len(lst)==len(double):
-                lastcheck=1
 
-
-            if len(new2)>0 and lastcheck==0:
+            if len(new2)>0:
                 with open('records.txt','w') as f:
                     f.writelines(double)
                     print('\n')
                     print("Record deleted succesfully!")
                 
-        
-        if u==0:
-            print("no records were deleted!")
-
     try:
-        if u==1:
-            if check==1 or variable==1:
-                if lastcheck==0:
-                    if len(new)!=len(lst):
-                        if not len(new2)>0:
-                            with open('records.txt','w') as f:
-                                f.writelines(new)
-                                print('Record deleted succesfully!')
+        if len(new1)==1:
+            if not len(new2)>0:
+                with open('records.txt','w') as f:
+                    f.writelines(new)
+                    print('Record deleted succesfully!')
     except:
-        print('')
-
-    if lastcheck==1:
-        print('\n')
-        print("No matches of given class and name found!")
-
-            
+        print('')            
 
     
 def text_menu():
@@ -606,7 +597,11 @@ def delete_binary():
 
             print('\n')
 
-            b=input("are you sure you wish to delete the above record(s)? (Y/N)")
+            if len(new)>1:
+                b=input("are you sure you wish to delete any of the above records? (Y/N) ")
+            else:
+                b=input("are you sure you wish to delete the above record? (Y/N) ")                
+
             if b in ['y','Y']:
                 var=1
             else:
@@ -945,30 +940,33 @@ def delete_csv():
             print("student not found!")
             return
                 
-        print('\n')
-        inp=input("are you sure you wish to delete the above record(s)? (Y/N)")
+        print('\n')                    
+        try:
+             with open("student.csv",'r') as f:
+                o=csv.reader(f)
+                for i in o:
+                    if not i[0]==a:
+                         new.append(i)
+
+                    if i[0]==a:
+                         new1.append(i)
+
+                    if not i[0]==a:
+                        new3.append(i)
+        except:
+            print('')
+
+        if len(new1)>1:
+            inp=input("are you sure you wish to delete any of the above records? (Y/N)")
+        else:
+            inp=input("are you sure you wish to delete the above record? (Y/N)")
+
         if inp in ['y','Y']:
             b=1
         else:
             print("no records deleted!")
             return
-                    
-        try:
-            if b==1:
-                with open("student.csv",'r') as f:
-                    o=csv.reader(f)
-                    for i in o:
-                        if not i[0]==a:
-                             new.append(i)
-
-                        if i[0]==a:
-                             new1.append(i)
-
-                        if not i[0]==a:
-                            new3.append(i)
-
-        except:
-            print('')
+            
 
 
         if len(new1)>1:
@@ -1050,12 +1048,10 @@ def csv_menu():
         
 
             
-
 """MENU"""
 
 def main():
     while True:
-
         a=input("\nenter your choice: \n1: TEXT FILE \n2: BINARY FILE \n3: CSV FILE \n4: BREAK \n")
 
         if a=='1':
