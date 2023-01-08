@@ -792,7 +792,6 @@ def modify_csv():
     x=csv.reader(file3)
     for i in x:
         if '95'>=i[2]>'90':
-            i[2]=int(i[2])+5
         lst.append(i)
     print("records updated successfully!")
     file3.close()
